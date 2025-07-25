@@ -186,11 +186,24 @@
             gap: 15px;
             margin-top: 20px;
             max-width: 300px;
+            width: 100%;
         }
 
         @media (max-width: 768px) {
             .touch-controls {
                 display: grid;
+            }
+            
+            /* より小さな画面での追加調整 */
+            .game-board {
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+            
+            /* 操作説明を非表示にしてスペース節約 */
+            .controls:first-of-type {
+                display: none;
             }
         }
 
@@ -268,11 +281,141 @@
             .game-container {
                 flex-direction: column;
                 gap: 20px;
+                padding: 15px;
             }
             
             .info-panel {
-                flex-direction: row;
+                flex-direction: column;
                 gap: 15px;
+                width: 100%;
+                max-width: none;
+            }
+            
+            /* スコアとレベルを横並びに */
+            .score-level-row {
+                display: flex;
+                gap: 15px;
+                width: 100%;
+            }
+            
+            .score-section {
+                flex: 1;
+                padding: 15px;
+                min-height: auto;
+            }
+            
+            .score-section h3 {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+            
+            .score-value {
+                font-size: 20px;
+            }
+            
+            /* 次のピースを小さく調整 */
+            .next-piece {
+                padding: 15px;
+            }
+            
+            .next-piece h3 {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+            
+            .next-piece-display {
+                width: 80px;
+                height: 80px;
+                grid-template-columns: repeat(4, 1fr);
+                grid-template-rows: repeat(4, 1fr);
+            }
+            
+            /* コントロール説明を簡潔に */
+            .controls {
+                padding: 15px;
+            }
+            
+            .controls h3 {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+            
+            .control-item {
+                font-size: 12px;
+                margin-bottom: 5px;
+            }
+            
+            .control-btn {
+                padding: 8px 16px;
+                font-size: 12px;
+                margin: 3px;
+            }
+        }
+        
+        /* より小さな画面での追加調整 */
+        @media (max-width: 480px) {
+            .game-container {
+                padding: 10px;
+                gap: 15px;
+            }
+            
+            .score-level-row {
+                gap: 10px;
+            }
+            
+            .score-section {
+                padding: 10px;
+            }
+            
+            .score-section h3 {
+                font-size: 14px;
+                margin-bottom: 5px;
+            }
+            
+            .score-value {
+                font-size: 18px;
+            }
+            
+            .next-piece {
+                padding: 10px;
+                text-align: center;
+            }
+            
+            .next-piece h3 {
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+            
+            .next-piece-display {
+                width: 60px;
+                height: 60px;
+                margin: 0 auto;
+            }
+            
+            .controls {
+                padding: 10px;
+            }
+            
+            .controls h3 {
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+            
+            .control-btn {
+                padding: 6px 12px;
+                font-size: 11px;
+                margin: 2px;
+            }
+            
+            .touch-controls {
+                gap: 10px;
+                margin-top: 15px;
+                max-width: 250px;
+            }
+            
+            .touch-btn {
+                padding: 15px;
+                font-size: 14px;
             }
         }
     </style>
@@ -292,14 +435,17 @@
         </div>
         
         <div class="info-panel">
-            <div class="score-section">
-                <h3>スコア</h3>
-                <div class="score-value" id="score">0</div>
-            </div>
-            
-            <div class="score-section">
-                <h3>レベル</h3>
-                <div class="score-value" id="level">1</div>
+            <!-- スコアとレベルを横並びに -->
+            <div class="score-level-row">
+                <div class="score-section">
+                    <h3>スコア</h3>
+                    <div class="score-value" id="score">0</div>
+                </div>
+                
+                <div class="score-section">
+                    <h3>レベル</h3>
+                    <div class="score-value" id="level">1</div>
+                </div>
             </div>
             
             <div class="next-piece">
