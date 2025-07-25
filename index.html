@@ -98,8 +98,8 @@
             width: 120px;
             height: 120px;
             margin: 0 auto;
-            background: #000;
-            border: 2px solid #fff;
+            background: transparent;
+            border: none;
             border-radius: 8px;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -184,7 +184,7 @@
             display: none;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
-            margin-top: 20px;
+            margin-bottom: 20px;
             max-width: 300px;
             width: 100%;
         }
@@ -326,6 +326,8 @@
             .next-piece-display {
                 width: 80px;
                 height: 80px;
+                background: transparent;
+                border: none;
                 grid-template-columns: repeat(4, 1fr);
                 grid-template-rows: repeat(4, 1fr);
             }
@@ -390,6 +392,8 @@
                 width: 60px;
                 height: 60px;
                 margin: 0 auto;
+                background: transparent;
+                border: none;
             }
             
             .controls {
@@ -409,7 +413,7 @@
             
             .touch-controls {
                 gap: 10px;
-                margin-top: 15px;
+                margin-bottom: 15px;
                 max-width: 250px;
             }
             
@@ -435,6 +439,14 @@
         </div>
         
         <div class="info-panel">
+            <!-- タッチコントロール -->
+            <div class="touch-controls">
+                <button class="touch-btn left" id="leftBtn">←</button>
+                <button class="touch-btn rotate" id="rotateBtn">↻</button>
+                <button class="touch-btn right" id="rightBtn">→</button>
+                <button class="touch-btn down" id="downBtn">↓</button>
+            </div>
+            
             <!-- スコアとレベルを横並びに -->
             <div class="score-level-row">
                 <div class="score-section">
@@ -468,14 +480,6 @@
                 <button class="control-btn pause" id="pauseBtn" onclick="pauseGame()">一時停止</button>
                 <button class="control-btn stop" id="stopBtn" onclick="stopGame()">ストップ</button>
             </div>
-        </div>
-        
-        <!-- タッチコントロール -->
-        <div class="touch-controls">
-            <button class="touch-btn left" id="leftBtn">←</button>
-            <button class="touch-btn rotate" id="rotateBtn">↻</button>
-            <button class="touch-btn right" id="rightBtn">→</button>
-            <button class="touch-btn down" id="downBtn">↓</button>
         </div>
     </div>
 
