@@ -30,6 +30,24 @@
             border-radius: 20px;
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 90vw;
+            flex-wrap: wrap;
+        }
+
+        /* モバイル対応 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                align-items: flex-start;
+            }
+            
+            .game-container {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+                max-width: 100%;
+                align-items: center;
+            }
         }
 
         .game-board {
@@ -161,6 +179,59 @@
             background: linear-gradient(45deg, #ff9800, #f57c00);
         }
 
+        /* タッチコントロール */
+        .touch-controls {
+            display: none;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+            max-width: 300px;
+        }
+
+        @media (max-width: 768px) {
+            .touch-controls {
+                display: grid;
+            }
+        }
+
+        .touch-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .touch-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .touch-btn.rotate {
+            grid-column: 2;
+            background: linear-gradient(45deg, #e91e63, #c2185b);
+        }
+
+        .touch-btn.left {
+            background: linear-gradient(45deg, #2196f3, #1976d2);
+        }
+
+        .touch-btn.right {
+            background: linear-gradient(45deg, #2196f3, #1976d2);
+        }
+
+        .touch-btn.down {
+            grid-column: 2;
+            background: linear-gradient(45deg, #ff9800, #f57c00);
+        }
+
         .game-paused {
             position: absolute;
             top: 50%;
@@ -251,6 +322,14 @@
                 <button class="control-btn pause" id="pauseBtn" onclick="pauseGame()">一時停止</button>
                 <button class="control-btn stop" id="stopBtn" onclick="stopGame()">ストップ</button>
             </div>
+        </div>
+        
+        <!-- タッチコントロール -->
+        <div class="touch-controls">
+            <button class="touch-btn left" id="leftBtn">←</button>
+            <button class="touch-btn rotate" id="rotateBtn">↻</button>
+            <button class="touch-btn right" id="rightBtn">→</button>
+            <button class="touch-btn down" id="downBtn">↓</button>
         </div>
     </div>
 
@@ -585,6 +664,120 @@
                             e.preventDefault();
                             this.togglePause();
                             break;
+                    }
+                });
+                
+                // タッチコントロールの設定
+                this.setupTouchControls();
+            }
+            
+            setupTouchControls() {
+                const leftBtn = document.getElementById('leftBtn');
+                const rightBtn = document.getElementById('rightBtn');
+                const rotateBtn = document.getElementById('rotateBtn');
+                const downBtn = document.getElementById('downBtn');
+                
+                // 左移動
+                leftBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    if (this.gameRunning && !this.gamePaused) {
+                        this.movePiece(-1, 0);
+                    }
+                });
+                
+                // 右移動
+                rightBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    if (this.gameRunning && !this.gamePaused) {
+                        this.movePiece(1, 0);
+                    }
+                });
+                
+                // 回転
+                rotateBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    if (this.gameRunning && !this.gamePaused) {
+                        this.rotatePiece();
+                    }
+                });
+                
+                // 下移動
+                downBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    if (this.gameRunning && !this.gamePaused) {
+                        this.movePiece(0, 1);
+                    }
+                });
+                
+                // 連続操作のためのリピート機能
+                let repeatInterval;
+                
+                const startRepeat = (action) => {
+                    action();
+                    repeatInterval = setInterval(action, 150);
+                };
+                
+                const stopRepeat = () => {
+                    clearInterval(repeatInterval);
+                };
+                
+                // 左右移動のリピート
+                leftBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    if (this.gameRunning && !this.gamePaused) {
+                        startRepeat(() => this.movePiece(-1, 0));
+                    }
+                });
+                
+                leftBtn.addEventListener('touchend', stopRepeat);
+                leftBtn.addEventListener('touchcancel', stopRepeat);
+                
+                rightBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    if (this.gameRunning && !this.gamePaused) {
+                        startRepeat(() => this.movePiece(1, 0));
+                    }
+                });
+                
+                rightBtn.addEventListener('touchend', stopRepeat);
+                rightBtn.addEventListener('touchcancel', stopRepeat);
+                
+                downBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    if (this.gameRunning && !this.gamePaused) {
+                        startRepeat(() => this.movePiece(0, 1));
+                    }
+                });
+                
+                downBtn.addEventListener('touchend', stopRepeat);
+                downBtn.addEventListener('touchcancel', stopRepeat);
+                
+                // マウスクリックにも対応
+                leftBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (this.gameRunning && !this.gamePaused) {
+                        this.movePiece(-1, 0);
+                    }
+                });
+                
+                rightBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (this.gameRunning && !this.gamePaused) {
+                        this.movePiece(1, 0);
+                    }
+                });
+                
+                rotateBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (this.gameRunning && !this.gamePaused) {
+                        this.rotatePiece();
+                    }
+                });
+                
+                downBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (this.gameRunning && !this.gamePaused) {
+                        this.movePiece(0, 1);
                     }
                 });
             }
